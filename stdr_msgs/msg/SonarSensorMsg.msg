@@ -1,7 +1,7 @@
 # Rfid sensor description
-float32 maxRange
-float32 minRange
-float32 coneAngle
+float32 max_range
+float32 min_range
+float32 cone_angle
 
 float32 frequency
 stdr_msgs/Noise noise

@@ -1,99 +1,82 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(stdr_msgs)
 
-find_package(catkin REQUIRED COMPONENTS
-  message_generation
-  std_msgs
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+find_package(ament_cmake REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(actionlib_msgs REQUIRED)
+
+set(msg_files
+  "msg/Noise.msg"
+  "msg/LaserSensorMsg.msg"
+  "msg/SonarSensorMsg.msg"
+  "msg/KinematicMsg.msg"
+  "msg/FootprintMsg.msg"
+  "msg/RobotMsg.msg"
+  "msg/RobotIndexedMsg.msg"
+  "msg/RobotIndexedVectorMsg.msg"
+
+  "msg/RfidSensorMsg.msg"
+  "msg/RfidSensorMeasurementMsg.msg"
+  "msg/RfidTag.msg"
+  "msg/RfidTagVector.msg"
+
+  "msg/SoundSensorMsg.msg"
+  "msg/SoundSensorMeasurementMsg.msg"
+  "msg/SoundSource.msg"
+  "msg/SoundSourceVector.msg"
+
+  "msg/ThermalSensorMsg.msg"
+  "msg/ThermalSensorMeasurementMsg.msg"
+  "msg/ThermalSource.msg"
+  "msg/ThermalSourceVector.msg"
+
+  "msg/CO2SensorMsg.msg"
+  "msg/CO2SensorMeasurementMsg.msg"
+  "msg/CO2Source.msg"
+  "msg/CO2SourceVector.msg"
+
+  "srv/LoadMap.srv"
+  "srv/LoadExternalMap.srv"
+  "srv/RegisterGui.srv"
+  "srv/MoveRobot.srv"
+
+  "srv/AddRfidTag.srv"
+  "srv/DeleteRfidTag.srv"
+
+  "srv/AddThermalSource.srv"
+  "srv/DeleteThermalSource.srv"
+
+  "srv/AddSoundSource.srv"
+  "srv/DeleteSoundSource.srv"
+
+  "srv/AddCO2Source.srv"
+  "srv/DeleteCO2Source.srv"
+
+  "action/RegisterRobot.action"
+  "action/SpawnRobot.action"
+  "action/DeleteRobot.action"
+)
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${msg_files}
+  DEPENDENCIES std_msgs
   geometry_msgs
   actionlib_msgs
   nav_msgs
-)
+  actionlib_msgs
+  )
 
-add_message_files(
-    FILES
-    Noise.msg
-    LaserSensorMsg.msg
-    SonarSensorMsg.msg
-    KinematicMsg.msg
-    FootprintMsg.msg
-    RobotMsg.msg
-    RobotIndexedMsg.msg
-    RobotIndexedVectorMsg.msg
+ament_export_dependencies(rosidl_default_runtime)
 
-    RfidSensorMsg.msg
-    RfidSensorMeasurementMsg.msg
-    RfidTag.msg
-    RfidTagVector.msg
-
-    SoundSensorMsg.msg
-    SoundSensorMeasurementMsg.msg
-    SoundSource.msg
-    SoundSourceVector.msg
-
-    ThermalSensorMsg.msg
-    ThermalSensorMeasurementMsg.msg
-    ThermalSource.msg
-    ThermalSourceVector.msg
-
-    CO2SensorMsg.msg
-    CO2SensorMeasurementMsg.msg
-    CO2Source.msg
-    CO2SourceVector.msg
-)
-
-add_service_files(
-    FILES
-    LoadMap.srv
-    LoadExternalMap.srv
-    RegisterGui.srv
-    MoveRobot.srv
-
-    AddRfidTag.srv
-    DeleteRfidTag.srv
-
-    AddThermalSource.srv
-    DeleteThermalSource.srv
-
-    AddSoundSource.srv
-    DeleteSoundSource.srv
-
-    AddCO2Source.srv
-    DeleteCO2Source.srv
-)
-
-add_action_files(
-    FILES
-    RegisterRobot.action
-    SpawnRobot.action
-    DeleteRobot.action
-)
-
-## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-    std_msgs
-    geometry_msgs
-    nav_msgs
-    actionlib_msgs # Or other packages containing msgs
-)
-
-
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES stdr_msgs
- CATKIN_DEPENDS
-    message_runtime
-    std_msgs
-    geometry_msgs
-    actionlib_msgs
-    nav_msgs
-#  DEPENDS system_lib
-)
-
-# Install headers
-install(DIRECTORY include/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h"
-)
-
+ament_package()
 
